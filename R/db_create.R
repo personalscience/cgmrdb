@@ -29,18 +29,15 @@ cgm_db <- function(db_config = "sqldb") {
     password = conn_args$password
   )
 
-  GLUCOSE_DATA_FRAME <-
-    tibble(timestamp=lubridate::now(), scan = 0.0, hist = 0.0, strip = 0.0, value = 0.0, food = "", user_id = 0.0)
-  NOTES_DATA_FRAME <-
-    tibble(Start=lubridate::now(), End =lubridate::now(), Activity = "Event", Comment = "meal", Z = NA, user_id = 0)
+  data("accounts_firebase")
+  data("accounts_user")
+  data("accounts_user_demographics")
+  data("sample_glucose1")
+  data("sample_notes1")
+
   USER_DATA_FRAME <-
     tibble(first_name = "first", last_name = "last", birthdate = as.Date("1900-01-01"), libreview_status = as.character(NA), user_id = 0)
-  ACCOUNTS_USER <-
-    tibble(id = as.integer(0), user_id = 0, created = lubridate::now(), modified = lubridate::now(), first_name = "First", last_name = "Last")
-  ACCOUNTS_FIREBASE <-
-    tibble(id = as.integer(0), user_id = 0, firebase_id = "000" )
-  ACCOUNTS_USER_DEMOGRAPHICS <-
-    tibble(id = as.integer(0), user_id = 0, sex = "M", zip = "98040" )
+
 
 
   if (class(con) == "PqConnection"){
@@ -77,11 +74,11 @@ cgm_db <- function(db_config = "sqldb") {
 
     make_table_with_index(con,
                               table_name = "glucose_records",
-                              table = GLUCOSE_DATA_FRAME,
+                              table = sample_glucose1,
                               index = "timestamp")
     make_table_with_index(con,
                               table_name = "notes_records",
-                              table = NOTES_DATA_FRAME,
+                              table = sample_notes1,
                               index = "Comment")
     make_table_with_index(con,
                               table_name = "user_list",
@@ -90,15 +87,15 @@ cgm_db <- function(db_config = "sqldb") {
 
     make_table_with_index(con,
                           table_name = "accounts_user",
-                          table = ACCOUNTS_USER,
+                          table = accounts_user,
                           index = "user_id")
     make_table_with_index(con,
                           table_name = "accounts_firebase",
-                          table = ACCOUNTS_FIREBASE,
+                          table = accounts_firebase,
                           index = "user_id")
     make_table_with_index(con,
                           table_name = "accounts_user_demographics",
-                          table = ACCOUNTS_USER_DEMOGRAPHICS,
+                          table = accounts_user_demographics,
                           index = "user_id")
 
 

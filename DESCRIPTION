@@ -1,6 +1,6 @@
 Package: cgmrdb
 Title: CGM Database Handling Package
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Richard", "Sprague", , "sprague@personalscience.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3789-5747"))
@@ -12,10 +12,15 @@ RoxygenNote: 7.1.2
 Imports: 
     cgmr (>= 0.0.6.5),
     DBI,
-    firebase (>= 1.0.0.9000)
+    dplyr,
+    firebase (>= 1.0.0.9000),
+    magrittr
 Remotes: 
     JohnCoene/firebase,
     personalscience/cgmr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
+LazyData: true
