@@ -31,7 +31,8 @@ test_that("Sample data loaded correctly", {
 })
 
 test_that("Make a new table",{
-
+  expect_equal(class(make_table_with_index(con, table_name = "newtable", table = tibble(a=c(1,2,3),b=c("a","b","c")))),
+               c('tbl_SQLiteConnection', 'tbl_dbi', 'tbl_sql', 'tbl_lazy', 'tbl'))
 })
 
 # Clean up
