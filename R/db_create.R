@@ -34,6 +34,7 @@ cgm_db <- function(db_config = "sqldb") {
   data("accounts_user_demographics")
   data("sample_glucose1")
   data("sample_notes1")
+  data("experiments")
 
   USER_DATA_FRAME <-
     tibble(first_name = "first", last_name = "last", birthdate = as.Date("1900-01-01"), libreview_status = as.character(NA), user_id = 0)
@@ -97,6 +98,10 @@ cgm_db <- function(db_config = "sqldb") {
                           table_name = "accounts_user_demographics",
                           table = accounts_user_demographics,
                           index = "user_id")
+    make_table_with_index(con,
+                          table_name = "experiments",
+                          table = experiments,
+                          index = "experiment_id")
 
 
   thisEnv <- environment()
@@ -267,4 +272,25 @@ make_table_with_index <- function(con,
     dplyr::copy_to(con, df = table, name = table_name, index = index, temporary = FALSE)
   }
 
+}
+
+#' @title Deployment : Add a New Table
+#' @description To be used only interactively at deployment time, this function will add a new table to the
+#' currently connected database (as determined by `db_connection()`). Please be super careful to name
+#' the `proposed_table` to be something that already exists as a `data()` object in this package.
+#' @param proposed_table character string indicated one of the `data()` objects available to this package.
+# add a new `accounts_user` table if none exists in this database
+deploy_add_table <- function(proposed_table = "accounts_user") {
+  con <- db_connection()
+  data(proposed_table)
+  if (proposed_table %in% dbListTables(con)) {
+    message(sprintf("Table %s already exists", proposed_table))
+  }
+  else {
+    message(sprintf("adding new table %s", proposed_table))
+    make_table_with_index(con, table_name = proposed_table, table = eval(sym(proposed_table)))
+  }
+
+
+  dbDisconnect(con)
 }

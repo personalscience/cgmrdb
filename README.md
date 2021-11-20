@@ -5,7 +5,7 @@ This package is also intended for interactive work, such as setting up or modify
 Initialize a database object
 
 ``` r
-db <- cgm_db()
+db <- cgm_db(db_config = "sqldb")
 db$con  # return the connection, for use in other functions
 db$list_objects() # show all the objects in this database
 ```
