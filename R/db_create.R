@@ -251,6 +251,8 @@ db_write_raw_glucose_table <- function(con, table_name = "raw_glucose", table_df
 
 }
 #' @title Make a new database tables with `index`
+#' @description IMPORTANT TODO: this should be re-written with direct SQL Commands
+#' e.g. "CREATE INDEX user_id ON user_list (user_id);"
 #' @param con valid database connection
 #' @param table_name character string name for the table.
 #' @param table a valid glucose data frame. Never use the default value unless you are testing.
