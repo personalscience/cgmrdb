@@ -24,5 +24,6 @@ make_table_with_index(
 NULL if table already exists. Otherwise creates the table and returns TRUE invisibly.
 }
 \description{
-Make a new database tables with \code{index}
+IMPORTANT TODO: this should be re-written with direct SQL Commands
+e.g. "CREATE INDEX user_id ON user_list (user_id);"
 }
