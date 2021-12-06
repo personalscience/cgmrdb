@@ -5,6 +5,7 @@ Sys.setenv("R_CONFIG_ACTIVE"=
              "sqldb")
 Sys.setenv("R_CONFIG_ACTIVE" = "shinyapps")
 Sys.setenv("R_CONFIG_ACTIVE" = "local")
+Sys.setenv("R_CONFIG_ACTIVE" = "sandbox")
 
 
 

@@ -1,10 +1,10 @@
 Package: cgmrdb
 Title: CGM Database Handling Package
-Version: 0.0.1.1
+Version: 0.0.1.2
 Authors@R: 
     person("Richard", "Sprague", , "sprague@personalscience.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3789-5747"))
-Description: What the package does (one paragraph).
+Description: Database-related features for CGM apps
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
