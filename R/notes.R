@@ -1,5 +1,23 @@
 # Handling Notes-related functions
 
+
+
+
+#' @title Drop Notes and Write From Scratch
+#' @param con valid database connection
+#' @param notes_df table to write to notes records
+#' @param dry_run logical: if true, then don't make any permanent changes
+write_notes_raw_from_scratch <- function(con, notes_df, dry_run = FALSE) {
+
+  if(DBI::dbExistsTable(con, "notes_records_raw")){
+    DBI::dbRemoveTable(con, "notes_records_raw")
+  }
+
+  make_table_with_index(con, table_name = "notes_records_raw", table = notes_df, index = "Comment")
+
+
+}
+
 #' @title Write a notes dataframe to the database
 #' @description
 #' For backwards compatibility, it allows a table in cgmr original notes_records format.
@@ -44,4 +62,45 @@ db_write_notes <- function(con, notes_df, user_id = 1234, dry_run = TRUE ) {
 
 
   return(new_records)
+}
+
+#' @title Classify Notes According to Experiment
+#' @description User data might not have the precise word to describe a particular Comment (usually a food time). This
+#' function will return a canonical version of the Comment, based on data from the Experiments table.
+#' @param foodname character vector with name(s) of food item
+#' @param mapping_table dataframe showing how to do the mapping.
+#' @export
+#' @return character vector with canonical name for the food item
+classify_notes_to_experiment <- function(foodname, mapping_table) {
+
+  if(is.null(foodname)) {
+    return(NA)
+  }
+
+  foodname <- stringr::str_to_upper(foodname) #
+  apply_across_all <- function(x) {
+    s <-  mapping_table %>% filter(.data[["label"]] %>% stringr::str_to_upper() == x)
+    if (nrow(s)> 0 ) return(s %>% pull(simpleName))
+    else return("other")
+
+  }
+
+  s <- purrr::map_chr(foodname, apply_across_all)
+  return(s)
+
+
+}
+
+#' @title Classify Notes According to Experiment (Tastermonial Edition)
+#' @description Same results as \link(classify_notes_to_experiment) but uses pre-canned Tastermonial mapping
+#' @param foodname character string name of the food item
+#' @return character vector with canonical name for the food item
+classify_notes_to_experiment_taster <- function(foodname) {
+
+  # a CSV file with columns `pid`, `names`, and `simpleName` to convert from each format
+  taster_names_convert_table <- read_csv(file=file.path(config::get("tastermonial")$datadir,
+                                                        "Tastermonial Name Mapping.csv"), col_types = "cdcc") %>%
+    mutate(label = Comment)
+
+  classify_notes_to_experiment(foodname, mapping_table = taster_names_convert_table)
 }
