@@ -12,3 +12,4 @@ Sys.setenv("R_CONFIG_ACTIVE" = "sandbox")
 deploy_add_table("accounts_user")
 deploy_add_table(proposed_table = "accounts_firebase")
 deploy_add_table(proposed_table = "experiments")
+
