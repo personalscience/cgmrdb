@@ -82,7 +82,7 @@ classify_notes_to_experiment <- function(foodname, mapping_table) {
     item_name <- x
     classy_table <- mapping_table
     result <- classy_table %>% filter(stringr::str_detect(item_name, pattern))
-    if(nrow(result)>0) return(result[["replacement"]])
+    if(nrow(result)>0) return(result[["replacement"]][1])
     else return("other")
   }
 
@@ -94,7 +94,7 @@ classify_notes_to_experiment <- function(foodname, mapping_table) {
 }
 
 #' @title Classify Notes According to Experiment (Tastermonial Edition)
-#' @description Same results as \link(classify_notes_to_experiment) but uses pre-canned Tastermonial mapping
+#' @description Same results as [classify_notes_to_experiment()] but uses pre-canned Tastermonial mapping
 #' @param foodname character string name of the food item
 #' @return character vector with canonical name for the food item
 classify_notes_to_experiment_taster <- function(foodname) {

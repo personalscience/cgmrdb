@@ -13,5 +13,5 @@ classify_notes_to_experiment_taster(foodname)
 character vector with canonical name for the food item
 }
 \description{
-Same results as \link(classify_notes_to_experiment) but uses pre-canned Tastermonial mapping
+Same results as \code{\link[=classify_notes_to_experiment]{classify_notes_to_experiment()}} but uses pre-canned Tastermonial mapping
 }
