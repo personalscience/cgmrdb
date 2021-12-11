@@ -36,6 +36,8 @@ test_that("Make a new table",{
                c('tbl_SQLiteConnection', 'tbl_dbi', 'tbl_sql', 'tbl_lazy', 'tbl'))
 })
 
+print(tbl(con, "notes_records") %>% names())
+
 # Clean up
 db$disconnect()
 if(file.exists("mydb.sqlite")){

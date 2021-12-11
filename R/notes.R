@@ -65,7 +65,7 @@ db_write_notes <- function(con, notes_df, user_id = 1234, dry_run = TRUE ) {
 }
 
 #' @title Classify Notes According to Experiment
-#' @description User data might not have the precise word to describe a particular Comment (usually a food time). This
+#' @description User data might not have the precise word to describe a particular Comment (usually a food name). This
 #' function will return a canonical version of the Comment, based on data from the Experiments table.
 #' @param foodname character vector with name(s) of food item
 #' @param mapping_table dataframe showing how to do the mapping.
@@ -77,13 +77,15 @@ classify_notes_to_experiment <- function(foodname, mapping_table) {
     return(NA)
   }
 
-  foodname <- stringr::str_to_upper(foodname) #
+  foodname <- stringr::str_to_lower(foodname)
   apply_across_all <- function(x) {
-    s <-  mapping_table %>% filter(.data[["label"]] %>% stringr::str_to_upper() == x)
-    if (nrow(s)> 0 ) return(s %>% pull(simpleName))
+    item_name <- x
+    classy_table <- mapping_table
+    result <- classy_table %>% filter(stringr::str_detect(item_name, pattern))
+    if(nrow(result)>0) return(result[["replacement"]])
     else return("other")
-
   }
+
 
   s <- purrr::map_chr(foodname, apply_across_all)
   return(s)
@@ -97,10 +99,10 @@ classify_notes_to_experiment <- function(foodname, mapping_table) {
 #' @return character vector with canonical name for the food item
 classify_notes_to_experiment_taster <- function(foodname) {
 
-  # a CSV file with columns `pid`, `names`, and `simpleName` to convert from each format
-  taster_names_convert_table <- read_csv(file=file.path(config::get("tastermonial")$datadir,
-                                                        "Tastermonial Name Mapping.csv"), col_types = "cdcc") %>%
-    mutate(label = Comment)
+  # a CSV file with columns `pattern` and `replacement` to convert from each format
+  taster_names_convert_table <- readr::read_csv(system.file("extdata", package = "cgmrdb", "experiments_map.csv"),
+                                                col_types = "cc") %>%
+    mutate(pattern = stringr::str_to_lower(pattern))
 
   classify_notes_to_experiment(foodname, mapping_table = taster_names_convert_table)
 }

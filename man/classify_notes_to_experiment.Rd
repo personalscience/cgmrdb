@@ -15,6 +15,6 @@ classify_notes_to_experiment(foodname, mapping_table)
 character vector with canonical name for the food item
 }
 \description{
-User data might not have the precise word to describe a particular Comment (usually a food time). This
+User data might not have the precise word to describe a particular Comment (usually a food name). This
 function will return a canonical version of the Comment, based on data from the Experiments table.
 }

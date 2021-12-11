@@ -42,26 +42,26 @@ cgm_db <- function(db_config = "sqldb") {
 
 
   if (class(con) == "PqConnection"){
-  newdb_sqlstring <-
-    paste0(
-      "CREATE DATABASE ",
-      conn_args$dbname,
-      "
+    newdb_sqlstring <-
+      paste0(
+        "CREATE DATABASE ",
+        conn_args$dbname,
+        "
             WITH
             OWNER = postgres
             ENCODING = 'UTF8'
             CONNECTION LIMIT = -1;"
-    )
+      )
 
-  ## Add a new database named with the value of conn_args$dbname if none exists on this server
-  if (conn_args$dbname %in%
-      DBI::dbGetQuery(con, "SELECT datname FROM pg_database WHERE datistemplate = false;")$datname)
-  { message("database already exists")
-    DBI::dbDisconnect(con)
+    ## Add a new database named with the value of conn_args$dbname if none exists on this server
+    if (conn_args$dbname %in%
+        DBI::dbGetQuery(con, "SELECT datname FROM pg_database WHERE datistemplate = false;")$datname)
+    { message("database already exists")
+      DBI::dbDisconnect(con)
 
-  } else {
-    DBI::dbSendQuery(con, newdb_sqlstring)
-  }
+    } else {
+      DBI::dbSendQuery(con, newdb_sqlstring)
+    }
   }
 
   con <- DBI::dbConnect(
