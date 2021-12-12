@@ -30,3 +30,16 @@ test_that("Map tastermonial experiment names",{
                  "Snapeas"))
 })
 
+# If you want to see how well the notes data is using the `classify_notes_to_experiment_taster()` function, run this
+#
+# ```R
+# notes_raw <- tasterdb::run_taster_notes(raw = TRUE)
+# notes <- tasterdb::run_taster_notes()
+# tibble(notes = notes$Comment,
+#        raw = notes_raw$Comment,
+#        simplified = classify_notes_to_experiment_taster(notes_raw$Comment)
+# )  %>%
+#   filter(notes != simplified)
+#
+# ```
+#
