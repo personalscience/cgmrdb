@@ -14,7 +14,6 @@ db$list_objects() # show all the objects in this database
 
 Create a new Postgres database following the connection details in `config.yml`. If no such database exists, it will be created. Otherwise the various tables are left alone. Then return the number of unique `user_id` in the `glucose_records` table.
 
-
 ``` r
 sandbox_db <- cgm_db(db_config = "sandbox")
 sandbox_db$glucose_records %>% distinct(user_id)
@@ -86,4 +85,3 @@ Sys.setenv(R_CONFIG_ACTIVE = "local")  # which maps to the default connection
 ```
 
 The default values on all my databases assume the user is `postgres`, so keep that in mind if you ever start a Postgres database instance from scratch, or upgrade from a previous version.
-

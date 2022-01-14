@@ -24,6 +24,7 @@ DBI::dbCanConnect(conn_args$driver,
 
 sandbox_db <- cgm_db(db_config = "sandbox")
 local_db <- cgm_db(db_config = "local")
+taster_db <- cgm_db(db_config = "shinyapps")
 
 sql_db <- cgm_db(db_config = "sqldb")
 
@@ -33,9 +34,13 @@ sandbox_db$glucose_records %>% distinct(user_id)
 # Make new notes ----
 
 raw_notes <- tasterdb::run_taster_notes(raw = TRUE)
-raw_notes2 <- cgmr::notes_df_from_glucose_table(local_db$glucose_records, user_id = 1234) %>% filter(Start>"2021-06-01")
+raw_notes2 <- cgmr::notes_df_from_glucose_table(sandbox_db$glucose_records, user_id = 1234) %>% filter(Start>"2021-06-01")
 new_notes <- bind_rows(raw_notes, raw_notes2) %>%
-  mutate(Comment = map_chr(stringr::str_to_upper(Comment), tasterdb::taster_classify_food))
+  mutate(Comment = map_chr(stringr::str_to_lower(Comment), classify_notes_to_experiment_taster))
+
+DBI::dbWriteTable(sandbox_db$con, "notes_records_raw", raw_notes2, append = TRUE)
+
+
 write_notes_raw_from_scratch(local_db$con, raw_notes)
 write_notes_raw_from_scratch(sandbox_db$con, raw_notes)
 write_notes_raw_from_scratch(sql_db$con, raw_notes)
