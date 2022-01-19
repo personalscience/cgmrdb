@@ -8,6 +8,7 @@ test_that("cgm_db object works",{
                                            "accounts_user",
                                            "accounts_user_demographics",
                                            "experiments",
+                                           "experiments_mapping",
                                            "glucose_records",
                                            "notes_records",
                                            "sqlite_stat1" ,

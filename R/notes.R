@@ -100,7 +100,7 @@ classify_notes_to_experiment <- function(foodname, mapping_table) {
 classify_notes_to_experiment_taster <- function(foodname) {
 
   # a CSV file with columns `pattern` and `replacement` to convert from each format
-  taster_names_convert_table <- readr::read_csv(system.file("extdata", package = "cgmrdb", "experiments_map.csv"),
+  taster_names_convert_table <- readr::read_csv(system.file("extdata", package = "cgmrdb", "experiments_mapping.csv"),
                                                 col_types = "cc") %>%
     mutate(pattern = stringr::str_to_lower(pattern))
 

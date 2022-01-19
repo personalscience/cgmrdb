@@ -83,6 +83,18 @@ CREATE TABLE public.experiments (
 ALTER TABLE public.experiments OWNER TO postgres;
 
 --
+-- Name: experiments_mapping; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.experiments_mapping (
+    pattern text,
+    replacement text
+);
+
+
+ALTER TABLE public.experiments_mapping OWNER TO postgres;
+
+--
 -- Name: glucose_records; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -135,6 +147,23 @@ CREATE TABLE public.raw_glucose (
 
 
 ALTER TABLE public.raw_glucose OWNER TO postgres;
+
+--
+-- Name: raw_notes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.raw_notes (
+    "Start" timestamp with time zone,
+    "End" timestamp with time zone,
+    "Activity" text,
+    "Comment" text,
+    "Z" boolean,
+    user_id double precision,
+    "TZ" integer
+);
+
+
+ALTER TABLE public.raw_notes OWNER TO postgres;
 
 --
 -- Name: user_list; Type: TABLE; Schema: public; Owner: postgres

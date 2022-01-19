@@ -85,3 +85,41 @@ Sys.setenv(R_CONFIG_ACTIVE = "local")  # which maps to the default connection
 ```
 
 The default values on all my databases assume the user is `postgres`, so keep that in mind if you ever start a Postgres database instance from scratch, or upgrade from a previous version.
+
+## Back Up and Save
+
+You can give any name to your database, though by convention I use `qsdb`. The Postgres command line utilities are handy for backing up and restoring an existing database.
+
+Save the schema
+
+``` zsh
+pg_dump qsdb --schema-only -U postgres > qsdb.sql
+```
+
+To see just the tables
+
+``` bash
+pg_dump -s qsdb -U postgres | awk 'RS="";/CREATE TABLE[^;]*;/'
+```
+
+Here's how I saved the entire contents of `qsdb` to a tar file
+
+``` bash
+pg_dump -U postgres -F t qsdb > qsdb.tar
+```
+
+Read that tar file into a new database `qsdb2` like this:
+
+``` sqlpostgresql
+(base) ➜  cgmrdb git:(dev) ✗ psql -U postgres
+psql (14.1)
+Type "help" for help.
+
+postgres=> create database qsdb2 ;
+CREATE DATABASE
+postgres=> \q
+(base) ➜  cgmrdb git:(dev) ✗ pg_restore --host localhost --port 5432  --dbname "qsdb2"  qsdb.tar
+(base) ➜  cgmrdb git:(dev) ✗
+```
+
+## 

@@ -35,6 +35,7 @@ cgm_db <- function(db_config = "sqldb") {
   data("sample_glucose1")
   data("sample_notes1")
   data("experiments")
+  data("experiments_mapping")
 
   USER_DATA_FRAME <-
     tibble(first_name = "first", last_name = "last", birthdate = as.Date("1900-01-01"), libreview_status = as.character(NA), user_id = 0)
@@ -102,6 +103,11 @@ cgm_db <- function(db_config = "sqldb") {
                           table_name = "experiments",
                           table = experiments,
                           index = "experiment_id")
+    make_table_with_index(con,
+                          table_name = "experiments_mapping",
+                          table = experiments_mapping,
+                          index = NULL)
+
 
 
   thisEnv <- environment()

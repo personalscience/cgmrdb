@@ -12,3 +12,7 @@
 
 /rsconnect
 config.yml
+
+*.sqlite
+*.tar
+
