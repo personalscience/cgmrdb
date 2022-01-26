@@ -10,6 +10,34 @@ db$con  # return the connection, for use in other functions
 db$list_objects() # show all the objects in this database
 ```
 
+## Tables
+
+This package probably should be implemented entirely in SQL. In fact, you should be able to create a new database from the `qsdb.sql` source. Originally the intent was to make something that could work across any kind of database using the `DBI::` package high level functions.
+
+Here are the key tables that the rest of the Taster package depends on
+
+### Users and Accounts
+
+-   `user_list` : (legacy) list of users and their `user_id`. Intended only for users whose data is not associated with a Firebase account. Usually this means people whose CGM data was entered without them having an account.
+
+-   `accounts_user` All user accounts. Contains their permission levels.
+
+-   `accounts_firebase` Mapping of Firebase IDs to `user_id`.
+
+-   `accounts_user_demographics`: Maps `user_id` to basic demographics, like age or geography.
+
+New accounts can only be created with Firebase. When searching for the `user_id` of a person who new logs in, the system first tries to match the Firebase ID with what exists in `accounts_firebase`. If there is no match, a new unique `user_id` is created and added to `accounts_firebase`.
+
+### Data
+
+-   `glucose_records`: canonical dataframe of glucose values
+
+-   `glucose_raw`: raw data in its original Libreview format
+
+-   `notes_records`: time series metadata, filtered into a canonical form for better performance.
+
+-   `notes_raw`: time series metadata, in the raw form in which it was acquired.
+
 ## Examples
 
 Create a new Postgres database following the connection details in `config.yml`. If no such database exists, it will be created. Otherwise the various tables are left alone. Then return the number of unique `user_id` in the `glucose_records` table.
